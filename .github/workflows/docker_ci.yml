@@ -28,6 +28,11 @@ jobs:
             target: xplore_common
             tag: humble-desktop
             platform: linux/amd64
+          - dockerfile: ./docker_foxy_jetson/Dockerfile
+            context: ./docker_foxy_jetson
+            target: xplore_common
+            tag: foxy-jetson
+            platform: linux/arm64
 
     permissions:
       contents: read
