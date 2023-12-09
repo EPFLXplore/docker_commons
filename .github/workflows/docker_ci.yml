@@ -40,8 +40,13 @@ jobs:
             platform: linux/amd64, linux/arm64
           - dockerfile: ./docker_foxy_jetson/Dockerfile
             context: ./docker_foxy_jetson
-            target: xplore_common
+            target: gazebo_nvidia
             tag: foxy-jetson
+            platform: linux/arm64
+          - dockerfile: ./docker_humble_jetson/Dockerfile
+            context: ./docker_humble_jetson
+            target: gazebo_nvidia
+            tag: humble-jetson
             platform: linux/arm64
 
     permissions:

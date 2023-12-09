@@ -84,40 +84,9 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1
 
 ###########################################
-#  Dev+Gazebo+Nvidia image 
-###########################################
-FROM dev AS gazebo_nvidia
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-################
-# Expose the nvidia driver to allow opengl 
-# Dependencies for glvnd and X11.
-################
-RUN apt-get update \
-    && apt-get install -y -qq --no-install-recommends \
-    libglvnd0 \
-    libgl1 \
-    libglx0 \
-    libegl1 \
-    libxext6 \
-    libx11-6
-
-# Install Gazebo
-RUN curl -sSL http://get.gazebosim.org | sh
-
-# Clean up
-RUN rm -rf /var/lib/apt/lists/*
-
-# Env vars for the nvidia-container-runtime.
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
-ENV QT_X11_NO_MITSHM 1
-
-###########################################
 #  Xplore Common image
 ###########################################
-FROM gazebo_nvidia AS xplore_common
+FROM dev AS xplore_common
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -147,8 +116,9 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get purge -y '*opencv*'
 RUN apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
     ros-${ROS_DISTRO}-xacro
+
+WORKDIR /home/$USERNAME
 
 # Allow non-root user to access the serial ports
 RUN usermod -aG dialout $USERNAME
@@ -157,3 +127,39 @@ RUN usermod -aG video $USERNAME
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
+
+###########################################
+#  Dev+Gazebo+Nvidia image 
+###########################################
+FROM xplore_common AS gazebo_nvidia
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+################
+# Expose the nvidia driver to allow opengl 
+# Dependencies for glvnd and X11.
+################
+RUN apt-get update \
+    && apt-get install -y -qq --no-install-recommends \
+    libglvnd0 \
+    libgl1 \
+    libglx0 \
+    libegl1 \
+    libxext6 \
+    libx11-6
+
+# Install Gazebo
+RUN curl -sSL http://get.gazebosim.org | sh
+
+# Install Gazebo ROS packages
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs
+
+# Clean up
+RUN rm -rf /var/lib/apt/lists/*
+
+# Env vars for the nvidia-container-runtime.
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+ENV QT_X11_NO_MITSHM 1
