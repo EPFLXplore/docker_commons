@@ -26,7 +26,7 @@ echo ""
 echo "Running docker..."
 
 docker run -it \
-    --name xplore_humble_desktop \
+    --name xplore_humble_desktop_nvidia \
     --rm \
     --runtime=nvidia \
     --gpus all \
@@ -39,4 +39,4 @@ docker run -it \
     -v $XAUTH:$XAUTH \
     -v /run/user/1000/at-spi:/run/user/1000/at-spi \
     -v /dev:/dev \
-    ghcr.io/epflxplore/docker_commons:humble-desktop
+    ghcr.io/epflxplore/docker_commons:humble-desktop-nvidia

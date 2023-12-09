@@ -91,9 +91,53 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1
 
 ###########################################
+#  Xplore Common image
+###########################################
+FROM dev AS xplore_common
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install EposCmd library
+WORKDIR /usr/local/lib
+COPY ./EposCmd/lib/libEposCmd.so.6.7.1.0 .
+COPY ./EposCmd/lib/libftd2xx.so.1.4.27 .
+RUN ln -s libEposCmd.so.6.7.1.0 libEposCmd.so
+RUN ln -s libftd2xx.so.1.4.27 libftd2xx.so
+
+WORKDIR /usr/lib
+RUN ln -s /usr/local/lib/libEposCmd.so libEposCmd.so
+RUN ln -s /usr/local/lib/libftd2xx.so libftd2xx.so
+
+WORKDIR /usr/include
+COPY ./EposCmd/include/Definitions.h .
+COPY ./EposCmd/include/ftd2xx.h .
+RUN mv Definitions.h EposCmd.h
+
+WORKDIR /etc/udev/rules.d
+COPY ./EposCmd/misc/99-ftdi.rules .
+COPY ./EposCmd/misc/99-epos4.rules .
+RUN /etc/init.d/udev restart
+
+# Install common ROS 2 packages
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
+    ros-${ROS_DISTRO}-xacro
+
+WORKDIR /home/$USERNAME
+
+# Allow non-root user to access the serial ports
+RUN usermod -aG dialout $USERNAME
+# Allow non-root user to access the video devices
+RUN usermod -aG video $USERNAME
+
+# Clean up
+RUN rm -rf /var/lib/apt/lists/*
+
+###########################################
 #  Dev+Gazebo+Nvidia image 
 ###########################################
-FROM dev AS gazebo_nvidia
+FROM xplore_common AS gazebo_nvidia
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -126,6 +170,11 @@ RUN apt-get update \
 # Install Gazebo
 RUN curl -sSL http://get.gazebosim.org | sh
 
+# Install Gazebo ROS packages
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs
+
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -133,48 +182,3 @@ RUN rm -rf /var/lib/apt/lists/*
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 ENV QT_X11_NO_MITSHM 1
-
-###########################################
-#  Xplore Common image
-###########################################
-FROM gazebo_nvidia AS xplore_common
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-# Install EposCmd library
-WORKDIR /usr/local/lib
-COPY ./EposCmd/lib/libEposCmd.so.6.7.1.0 .
-COPY ./EposCmd/lib/libftd2xx.so.1.4.27 .
-RUN ln -s libEposCmd.so.6.7.1.0 libEposCmd.so
-RUN ln -s libftd2xx.so.1.4.27 libftd2xx.so
-
-WORKDIR /usr/lib
-RUN ln -s /usr/local/lib/libEposCmd.so libEposCmd.so
-RUN ln -s /usr/local/lib/libftd2xx.so libftd2xx.so
-
-WORKDIR /usr/include
-COPY ./EposCmd/include/Definitions.h .
-COPY ./EposCmd/include/ftd2xx.h .
-RUN mv Definitions.h EposCmd.h
-
-WORKDIR /etc/udev/rules.d
-COPY ./EposCmd/misc/99-ftdi.rules .
-COPY ./EposCmd/misc/99-epos4.rules .
-RUN /etc/init.d/udev restart
-
-# Install common ROS 2 packages
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y --no-install-recommends \
-    ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-xacro
-
-WORKDIR /home/$USERNAME
-
-# Allow non-root user to access the serial ports
-RUN usermod -aG dialout $USERNAME
-# Allow non-root user to access the video devices
-RUN usermod -aG video $USERNAME
-
-# Clean up
-RUN rm -rf /var/lib/apt/lists/*

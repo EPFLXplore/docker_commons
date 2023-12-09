@@ -1,1 +1,1 @@
-docker build --progress=plain -t ghcr.io/epflxplore/docker_commons:foxy-desktop --target xplore_common .
+docker build --progress=plain -t ghcr.io/epflxplore/docker_commons:foxy-desktop-nvidia --target gazebo_nvidia .

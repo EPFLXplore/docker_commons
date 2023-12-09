@@ -20,14 +20,24 @@ jobs:
         include:
           - dockerfile: ./docker_foxy_desktop/Dockerfile
             context: ./docker_foxy_desktop
+            target: gazebo_nvidia
+            tag: foxy-desktop-nvidia
+            platform: linux/amd64
+          - dockerfile: ./docker_foxy_desktop/Dockerfile
+            context: ./docker_foxy_desktop
             target: xplore_common
             tag: foxy-desktop
+            platform: linux/amd64, linux/arm64
+          - dockerfile: ./docker_humble_desktop/Dockerfile
+            context: ./docker_humble_desktop
+            target: gazebo_nvidia
+            tag: humble-desktop-nvidia
             platform: linux/amd64
           - dockerfile: ./docker_humble_desktop/Dockerfile
             context: ./docker_humble_desktop
             target: xplore_common
             tag: humble-desktop
-            platform: linux/amd64
+            platform: linux/amd64, linux/arm64
           - dockerfile: ./docker_foxy_jetson/Dockerfile
             context: ./docker_foxy_jetson
             target: xplore_common
