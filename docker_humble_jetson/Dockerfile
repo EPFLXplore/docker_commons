@@ -113,10 +113,10 @@ RUN /etc/init.d/udev restart
 
 # Install common ROS 2 packages
 RUN apt-get update && apt-get upgrade -y
-# RUN apt-get purge -y '*opencv*'
-# RUN apt-get install -y --no-install-recommends \
-#     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
-#     ros-${ROS_DISTRO}-xacro
+RUN apt-get purge -y '*opencv*'
+RUN apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
+    ros-${ROS_DISTRO}-xacro
 
 WORKDIR /home/$USERNAME
 
@@ -152,9 +152,9 @@ RUN apt-get update \
 RUN curl -sSL http://get.gazebosim.org | sh
 
 # Install Gazebo ROS packages
-# RUN apt-get update && apt-get upgrade -y
-# RUN apt-get install -y --no-install-recommends \
-#     ros-${ROS_DISTRO}-gazebo-ros-pkgs
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
