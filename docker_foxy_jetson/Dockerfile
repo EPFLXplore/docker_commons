@@ -93,9 +93,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install EposCmd library
 WORKDIR /usr/local/lib
 COPY ./EposCmd/lib/libEposCmd.so.6.7.1.0 .
-COPY ./EposCmd/lib/libftd2xx.so.1.4.27 .
+COPY ./EposCmd/lib/libftd2xx.so.1.4.8 .
 RUN ln -s libEposCmd.so.6.7.1.0 libEposCmd.so
-RUN ln -s libftd2xx.so.1.4.27 libftd2xx.so
+RUN ln -s libftd2xx.so.1.4.8 libftd2xx.so
 
 WORKDIR /usr/lib
 RUN ln -s /usr/local/lib/libEposCmd.so libEposCmd.so
