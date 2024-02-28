@@ -177,6 +177,7 @@ RUN apt-get install -y --no-install-recommends \
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
+RUN rm -f cuda-keyring_1.0-1_all.deb
 
 # Env vars for the nvidia-container-runtime.
 ENV NVIDIA_VISIBLE_DEVICES all
