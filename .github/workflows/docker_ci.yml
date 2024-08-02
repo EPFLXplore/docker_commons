@@ -68,6 +68,11 @@ jobs:
             target: gazebo_nvidia
             tag: humble-jetson
             platform: linux/arm64
+          - dockerfile: ./docker_humble_jetson_torch/Dockerfile
+            context: ./docker_humble_jetson_torch
+            target: gazebo_nvidia
+            tag: humble-jetson-torch
+            platform: linux/arm64
 
     permissions:
       contents: read
