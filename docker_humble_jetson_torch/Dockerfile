@@ -121,7 +121,7 @@ COPY ros_entrypoint.sh ros2_install.sh .
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get purge -y '*opencv*'
 RUN ./ros2_install.sh \
-    behaviortree-cpp-v3 \
+    behaviortree_cpp \
     xacro
 
 WORKDIR /home/$USERNAME
