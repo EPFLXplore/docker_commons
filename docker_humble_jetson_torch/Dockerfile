@@ -5,9 +5,6 @@ FROM dustynv/ros:humble-desktop-pytorch-l4t-r35.4.1 AS base
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# commands will be appended/run by the entrypoint which sources the ROS environment
-COPY ros_entrypoint.sh ros2_install.sh /
-
 # Install language
 RUN apt-get update && apt-get install -y locales \
     && locale-gen en_US en_US.UTF-8 \
@@ -114,10 +111,15 @@ COPY ./EposCmd/misc/99-ftdi.rules .
 COPY ./EposCmd/misc/99-epos4.rules .
 RUN /etc/init.d/udev restart
 
+WORKDIR /home
+
+# commands will be appended/run by the entrypoint which sources the ROS environment
+COPY ros_entrypoint.sh ros2_install.sh .
+
 # Install common ROS 2 packages
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get purge -y '*opencv*'
-RUN /ros2_install.sh \
+RUN ./ros2_install.sh \
     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
     ros-${ROS_DISTRO}-xacro
 

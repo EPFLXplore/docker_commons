@@ -51,15 +51,15 @@ colcon build ${COLCON_FLAGS} --base-paths src --event-handlers console_direct+
 
 #rm ${ROS_WORKSPACE}/*.rosinstall
 
-if grep $ROS_WORKSPACE /ros_entrypoint.sh; then
+if grep $ROS_WORKSPACE ./ros_entrypoint.sh; then
     echo "workspace $ROS_WORKSPACE was already set to be sourced on startup:"
 else
-    tac /ros_entrypoint.sh | sed -e "3iros_source_env $ROS_WORKSPACE/install/setup.bash" | tac | tee /ros_entrypoint.sh
+    tac ./ros_entrypoint.sh | sed -e "3iros_source_env $ROS_WORKSPACE/install/setup.bash" | tac | tee ./ros_entrypoint.sh
     echo "added $ROS_WORKSPACE to be sourced on startup:"
 fi
 
 echo ""
-cat /ros_entrypoint.sh
+cat ./ros_entrypoint.sh
 
 if [ "$SOURCE" = "rosinstall_generator" ]; then
     source $ROS_WORKSPACE/install/setup.bash
