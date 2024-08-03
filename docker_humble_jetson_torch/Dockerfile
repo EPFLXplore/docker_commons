@@ -155,10 +155,11 @@ RUN apt-get update \
     libx11-6
 
 # Install Gazebo
-RUN add-apt-repository ppa:openrobotics/gazebo11-non-amd64
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gazebo \
-    libgazebo-dev
+RUN apt-get install lsb-release curl gnupg
+RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+RUN apt-get update
+RUN apt-get install gz-garden
 
 # Install Gazebo ROS packages
 RUN apt-get update && apt-get upgrade -y
