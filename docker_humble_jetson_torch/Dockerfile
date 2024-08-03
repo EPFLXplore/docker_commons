@@ -113,6 +113,7 @@ RUN /etc/init.d/udev restart
 
 WORKDIR /home
 
+RUN echo "Ros deps"
 # commands will be appended/run by the entrypoint which sources the ROS environment
 COPY ros_entrypoint.sh ros2_install.sh .
 
