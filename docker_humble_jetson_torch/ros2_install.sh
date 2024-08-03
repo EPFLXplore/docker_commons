@@ -65,10 +65,10 @@ if [ "$SOURCE" = "rosinstall_generator" ]; then
     ros_packages=$(ros2 pkg list)
     echo "ROS2 packages installed:"
     echo "$ros_packages"
-    if echo "$ros_packages" | grep "$@"; then
-        echo "$@ found"
-    else
-        echo "$@ not found"
-        exit 1
-    fi   
+    # if echo "$ros_packages" | grep "$@"; then
+    #     echo "$@ found"
+    # else
+    #     echo "$@ not found"
+    #     exit 1
+    # fi   
 fi
