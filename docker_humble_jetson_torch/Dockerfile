@@ -155,9 +155,9 @@ RUN apt-get update \
     libx11-6
 
 # Install Gazebo
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gazebo9 \
-    libgazebo9-dev
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     gazebo9 \
+#     libgazebo9-dev
 
 # Install Gazebo ROS packages
 RUN apt-get update && apt-get upgrade -y
