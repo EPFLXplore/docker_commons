@@ -5,6 +5,9 @@ FROM dustynv/ros:humble-desktop-pytorch-l4t-r35.4.1 AS base
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+# commands will be appended/run by the entrypoint which sources the ROS environment
+COPY ros_entrypoint.sh ros2_install.sh /
+
 # Install language
 RUN apt-get update && apt-get install -y locales \
     && locale-gen en_US en_US.UTF-8 \
