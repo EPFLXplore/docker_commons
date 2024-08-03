@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # downloads, builds, and installs ROS2 packages from source in $ROS_WORKSPACE directory
 # for example:  ros2_install.sh xacro teleop_twist_joy
 set -ex
