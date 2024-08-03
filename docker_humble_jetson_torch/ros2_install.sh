@@ -58,8 +58,7 @@ else
     echo "added $ROS_WORKSPACE to be sourced on startup:"
 fi
 
-echo ""
-cat ./ros_entrypoint.sh
+echo "Installed packages"
 
 if [ "$SOURCE" = "rosinstall_generator" ]; then
     source $ROS_WORKSPACE/install/setup.bash
