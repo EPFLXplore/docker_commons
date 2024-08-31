@@ -116,7 +116,8 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get purge -y '*opencv*'
 RUN apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
-    ros-${ROS_DISTRO}-xacro
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
 
 WORKDIR /home/$USERNAME
 
@@ -124,6 +125,9 @@ WORKDIR /home/$USERNAME
 RUN usermod -aG dialout $USERNAME
 # Allow non-root user to access the video devices
 RUN usermod -aG video $USERNAME
+
+# Add RMW_IMPLEMENTATION to .bashrc
+RUN echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> /home/${USERNAME}/.bashrc
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
