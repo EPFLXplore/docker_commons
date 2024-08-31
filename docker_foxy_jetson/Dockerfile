@@ -128,6 +128,8 @@ RUN usermod -aG video $USERNAME
 
 # Add RMW_IMPLEMENTATION to .bashrc
 RUN echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> /home/${USERNAME}/.bashrc
+# Add the source of the project to the .bashrc
+RUN echo "if [ -f /home/${USERNAME}/dev_ws/install/setup.bash ]; then source /home/${USERNAME}/dev_ws/install/setup.bash; fi" >> /home/${USERNAME}/.bashrc
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
