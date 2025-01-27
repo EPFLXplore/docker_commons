@@ -111,7 +111,6 @@ COPY ./EposCmd/misc/99-ftdi.rules .
 COPY ./EposCmd/misc/99-epos4.rules .
 RUN /etc/init.d/udev restart
 
-RUN apt-get remove -y python3-colcon-common-extensions || true
 RUN apt-get install -y python3-colcon-common-extensions
 
 # Install common ROS 2 packages
