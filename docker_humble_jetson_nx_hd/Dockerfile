@@ -112,9 +112,9 @@ COPY ./EposCmd/misc/99-epos4.rules .
 RUN /etc/init.d/udev restart
 
 # Install common ROS 2 packages
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && apt-get upgrade -y --fix-broken
 RUN apt-get purge -y '*opencv*'
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
     ros-${ROS_DISTRO}-xacro \
     ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
