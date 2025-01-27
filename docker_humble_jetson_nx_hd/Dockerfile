@@ -112,7 +112,7 @@ COPY ./EposCmd/misc/99-epos4.rules .
 RUN /etc/init.d/udev restart
 
 RUN apt-get remove -y python3-colcon-common-extensions || true
-RUN apt-get update && apt-get install -y python3-colcon-common-extensions
+RUN apt-get install -y python3-colcon-common-extensions
 
 # Install common ROS 2 packages
 RUN apt-get update && apt-get upgrade -y --fix-broken
