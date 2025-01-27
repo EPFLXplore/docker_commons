@@ -114,7 +114,7 @@ RUN /etc/init.d/udev restart
 # Install common ROS 2 packages
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get purge -y '*opencv*'
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
     ros-${ROS_DISTRO}-xacro \
     ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
