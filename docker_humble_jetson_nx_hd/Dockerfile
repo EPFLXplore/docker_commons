@@ -54,15 +54,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client \
     python3-argcomplete \
     python3-pip \
-    vim
+    vim \
+    software-properties-common
 
 # Install ROS2 Humble
-RUN apt-get update && apt-get install -y locales
-RUN locale-gen en_US en_US.UTF-8
-RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-RUN export LANG=en_US.UTF-8
-
-RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository universe
 
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
