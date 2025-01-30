@@ -71,9 +71,6 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/r
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y ros-humble-ros-base \
-    ros-dev-tools
-
 RUN ros2 --version
 
 ENV USERNAME=xplore
