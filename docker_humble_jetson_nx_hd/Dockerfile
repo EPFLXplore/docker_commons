@@ -66,10 +66,15 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/r
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-dev-tools \
     ros-humble-desktop \
-    ros-humble-ros-base
+    ros-humble-ros-base && apt-get clean
 
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash"
-RUN ros2
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN apt-get update && apt-get install -y \
+    python3-colcon-common-extensions \
+    python3-rosdep
+
+RUN rosdep init \ 
+    && rosdep update
 
 ENV USERNAME=xplore
 ARG USER_UID=1000
