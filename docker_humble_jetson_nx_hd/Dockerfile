@@ -73,7 +73,7 @@ RUN apt-get install -y ros-dev-tools \
     ros-humble-desktop \
     ros-humble-ros-base
 
-RUN source /opt/ros/humble/setup.bash
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash"
 RUN ros2
 
 ENV USERNAME=xplore
