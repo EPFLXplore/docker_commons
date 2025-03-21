@@ -66,7 +66,6 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/r
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-dev-tools \
     ros-humble-desktop \
-    ros-humble-gazebo-ros2-control \
     ros-humble-ros-base && apt-get clean
 
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
